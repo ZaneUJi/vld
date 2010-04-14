@@ -468,7 +468,7 @@ BOOL patchimport (HMODULE importmodule, HMODULE exportmodule, LPCSTR exportmodul
             // entry with the address of the replacement. Note that the IAT
             // entry may be write-protected, so we must first ensure that it is
             // writable.
-            VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), PAGE_READWRITE, &protect);
+            VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), PAGE_EXECUTE_READWRITE, &protect);
             iate->u1.Function = (DWORD_PTR)replacement;
             VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), protect, &protect);
 
@@ -649,7 +649,7 @@ VOID restoreimport (HMODULE importmodule, HMODULE exportmodule, LPCSTR exportmod
             // Found the IAT entry. Overwrite the address stored in the IAT
             // entry with the import's real address. Note that the IAT entry may
             // be write-protected, so we must first ensure that it is writable.
-            VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), PAGE_READWRITE, &protect);
+            VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), PAGE_EXECUTE_READWRITE, &protect);
             iate->u1.Function = (DWORD_PTR)import;
             VirtualProtect(&iate->u1.Function, sizeof(iate->u1.Function), protect, &protect);
             break;
